@@ -12,7 +12,7 @@ function doPost(data) {
             var updated = false
 
             if (index != -1) {
-                if (data.correctness && sheet[index][10] != "") {
+                if (data.correctness && sheet[index][10] == "") {
                     data.options.forEach(function (value, index) {
                         quizData[index + 6] = data.this_answered == index + 1 ? "Y" : "N"
                     })

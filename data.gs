@@ -5,10 +5,10 @@ var filter = [
             var table = getSheetData(data.sn)
             var index = binary_search(table, Number(data.sn))
 
-            if (index > -1 && table[index][10] && table[index][12])
+            if (index > -1 && table[index][10] != "" && table[index][12] != "")
                 return successResponse(1)
             else
-                return failResponse({})
+                return failResponse(0)
         }
     },
     {
@@ -20,7 +20,7 @@ var filter = [
             if (index > -1)
                 return successResponse(table[index][10])
             else
-                return failResponse({})
+                return failResponse()
         }
     },
     {
@@ -30,7 +30,7 @@ var filter = [
             var index = binary_search(table, Number(data.sn))
 
             if (index > -1) {
-                var wrongAnswers = []
+                var wrongAnswers = [];
                 [table[index][6], table[index][7], table[index][8], table[index][9]].forEach(function (value, index) {
                     if (value == 'N') wrongAnswers[wrongAnswers.length] = index
                 })
@@ -39,7 +39,7 @@ var filter = [
                     return successResponse(++wrongAnswers[Math.floor(Math.random() * wrongAnswers.length)])
             }
 
-            return failResponse({})
+            return failResponse()
         }
     },
     {
