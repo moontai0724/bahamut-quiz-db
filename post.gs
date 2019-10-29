@@ -12,10 +12,10 @@ function doPost(data) {
                     sheetDB
                         .getSheetByName(sheetName)
                         .getRange('A' + (index + 1) + ':M' + (index + 1))
-                        .setValues([[data.quiz_sn, data.quiz_question, data.quiz_option_1, data.quiz_option_2, data.quiz_option_3, data.quiz_option_4,
+                        .setValues([[data.sn, data.question, data.options[0], data.options[1], data.options[2], data.options[3],
                         data.this_answered == 1 ? 'Y' : 'N', data.this_answered == 2 ? 'Y' : 'N',
                         data.this_answered == 3 ? 'Y' : 'N', data.this_answered == 4 ? 'Y' : 'N',
-                        data.this_answered, (database[data.quiz_sn].reporter.indexOf(data.reporter) == -1 && data.reporter != ' ') ? database[data.quiz_sn].reporter + ', ' + data.reporter : database[data.quiz_sn].reporter, data.author, data.BoardSN]]);
+                        data.this_answered, (database[data.sn].reporter.indexOf(data.reporter) == -1 && data.reporter != ' ') ? database[data.sn].reporter + ', ' + data.reporter : database[data.sn].reporter, data.author, data.BoardSN]]);
                     response.message = 'Update data success.';
                 } else if (!data.correctness && sheet[index][5 + Number(data.this_answered)] == ' ') {
                     var targetColumn = ['G', 'H', 'I', 'J'][Number(data.this_answered) - 1];
@@ -36,12 +36,12 @@ function doPost(data) {
             } else {
                 sheetDB
                     .getSheetByName(sheetName)
-                    .appendRow([data.quiz_sn, data.quiz_question, data.quiz_option_1, data.quiz_option_2, data.quiz_option_3, data.quiz_option_4,
+                    .appendRow([data.sn, data.question, data.options[0], data.options[1], data.options[2], data.options[3],
                     data.this_answered == 1 ? (data.correctness ? 'Y' : 'N') : (data.correctness ? 'N' : ''),
                     data.this_answered == 2 ? (data.correctness ? 'Y' : 'N') : (data.correctness ? 'N' : ''),
                     data.this_answered == 3 ? (data.correctness ? 'Y' : 'N') : (data.correctness ? 'N' : ''),
                     data.this_answered == 4 ? (data.correctness ? 'Y' : 'N') : (data.correctness ? 'N' : ''),
-                    data.this_answered, data.reporter, data.author, data.BoardSN]);
+                    data.this_answered, "anonymous", data.author, data.BoardSN]);
                 response.message = "Add new data success.";
             }
 
@@ -58,7 +58,6 @@ function checkData(data) {
         data.sn &&
         data.question
         && data.options && data.options.length == 4 &&
-        data.reporter &&
         data.BoardSN &&
         data.this_answered &&
         (data.correctness == true || data.correctness == false)) {
