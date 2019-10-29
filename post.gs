@@ -2,10 +2,10 @@ function doPost(data) {
     data = JSON.parse(data.postData.contents);
     if (checkData(data)) {
         return getSheetData(data.sn, function (sheet) {
-            var sheetName = Math.floor(Number(data.quiz_sn) / 5000) * 5 + '000';
+            var sheetName = Math.floor(Number(data.sn) / 5000) * 5 + '000';
 
             var response = { status: 200, data: data, message: 'Success' };
-            var index = binary_search(sheet, Number(data.quiz_sn));
+            var index = binary_search(sheet, Number(data.sn));
 
             if (index != -1) {
                 if (data.correctness && sheet[index][10] == ' ') {
