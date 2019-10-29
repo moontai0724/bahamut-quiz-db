@@ -4,24 +4,24 @@ function getSheetData(quizSN, callback) {
     var sheet = sheetDB
         .getSheetByName(Math.floor(Number(quizSN) / 5000) * 5 + '000')
         .getDataRange()
-        .getDisplayValues();
+        .getDisplayValues()
 
     if (callback) {
-        return callback(sheet);
+        return callback(sheet)
     } else {
-        return sheet;
+        return sheet
     }
 }
 
 function binary_search(array, target) {
-    var L = 0, R = array.length - 1;
+    var L = 0, R = array.length - 1
     while (L <= R) {
-        var M = Math.floor((L + R) / 2);
-        if (array[M][0] == target) return M;
-        else if (array[M][0] > target) R = M - 1;
-        else L = M + 1;
+        var M = Math.floor((L + R) / 2)
+        if (array[M][0] == target) return M
+        else if (array[M][0] > target) R = M - 1
+        else L = M + 1
     }
-    return -1;
+    return -1
 }
 
 function formatData(arr) {
@@ -34,7 +34,7 @@ function formatData(arr) {
         "reporter": arr[11],
         "author": arr[12],
         "BoardSN": arr[13]
-    };
+    }
 }
 
 function successResponse(message) {
