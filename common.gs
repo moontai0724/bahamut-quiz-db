@@ -36,3 +36,17 @@ function formatData(arr) {
         "BoardSN": arr[13]
     };
 }
+
+function successResponse(message) {
+    return {
+        "success": true,
+        "message": message
+    }
+}
+
+function failResponse(message) {
+    return {
+        "success": false,
+        "message": message
+    }
+}

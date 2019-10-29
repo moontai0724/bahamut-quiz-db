@@ -4,7 +4,11 @@ function doGet(data) {
     data = data.parameter
     // data = { type: "answer", sn: 1 }
     // data = { type: undefined, sn: undefined }
-    return mapping_result(data, 0)
+    var result = mapping_result(data, 0)
+    if (result != "No Message")
+        return ContentService.createTextOutput(JSON.stringify(result)).setMimeType(ContentService.MimeType.JSON)
+    else
+        return ContentService.createTextOutput("No Message")
 }
 
 function mapping_result(data, index) {
@@ -16,7 +20,7 @@ function mapping_result(data, index) {
 }
 
 function checkRequirements(data, requirements) {
-    var passed = [];
+    var passed = []
     for (var key in requirements) {
         if (data[key])
             passed.push(requirements[key].test(data[key]))
