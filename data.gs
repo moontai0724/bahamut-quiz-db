@@ -6,19 +6,19 @@ var filter = [
         }
     },
     {
-        "requirements": { "type": /^check$/ },
+        "requirements": { "type": /^checkExisting$/, "sn": /\d/ },
         "action": function (data) {
-            var table = getSheetData(Math.floor(Number(data.sn) / 5000) * 5 + '000');
-            var index = binary_search(table, data.sn);
+            var table = getSheetData(data.sn);
+            var index = binary_search(table, Number(data.sn));
 
-            return ContentService.createTextOutput(index != -1 && table[index][10] && table[index][11] ? 1 : " ");
+            return ContentService.createTextOutput(index != -1 && table[index][10] && table[index][12] ? 1 : " ");
         }
     },
     {
         "requirements": { "type": /^answer$/, "sn": /\d/ },
         "action": function (data) {
-            var table = getSheetData(Math.floor(Number(data.sn) / 5000) * 5 + '000');
-            var index = binary_search(table, data.sn);
+            var table = getSheetData(data.sn);
+            var index = binary_search(table, Number(data.sn));
 
             return ContentService.createTextOutput(index != -1 ? table[index][10] : " ");
         }
@@ -26,70 +26,83 @@ var filter = [
     {
         "requirements": { "type": /^hint$/, "sn": /\d/ },
         "action": function (data) {
-            var table = getSheetData(Math.floor(Number(data.sn) / 5000) * 5 + '000');
-            var index = binary_search(table, data.sn);
+            var table = getSheetData(data.sn);
+            var index = binary_search(table, Number(data.sn));
 
             if (index != -1) {
-                var list = [];
+                var wrongAnswers = [];
                 [table[index][6], table[index][7], table[index][8], table[index][9]].forEach(function (value, index) {
-                    if (value == 'N') list[list.length] = index;
+                    if (value == 'N') wrongAnswers[wrongAnswers.length] = index;
                 });
 
-                return ContentService.createTextOutput(list.length != 0 ? list[Math.floor(Math.random() * list.length)] : " ");
+                return ContentService.createTextOutput(wrongAnswers.length != 0 ? wrongAnswers[Math.floor(Math.random() * wrongAnswers.length)]++ : " ");
             } return ContentService.createTextOutput(' ');
         }
     },
     {
         "requirements": { "type": /^quizCount$/ },
         "action": function (data) {
-            var response = { length: 0 };
-            for (var i = 0; i < 20; i++) {
-                response[i * 5 + "000"] = getSheetData(i * 5 + '000').length - 1;
-                response.length += getSheetData(i * 5 + '000').length - 1;
-            }
-            return ContentService.createTextOutput(JSON.stringify(response));
+            var response = { length: 0 }
+
+            sheetDB.getSheets().forEach(function (sheet) {
+                var rows = sheet.getMaxRows() - 1
+                response[sheet.getName()] = rows
+                response.length += rows
+            })
+
+            return ContentService.createTextOutput(JSON.stringify(response))
         }
     },
     {
         "requirements": { "type": /^fullSpreadsheet$/ },
         "action": function (data) {
-            for (var i = 0; i < 20; i++) {
-                getSheetData(i * 5 + '000').forEach(function (arr) {
-                    database[arr[0]] = format(arr);
-                });
-            }
+            var response = {}
 
-            return ContentService.createTextOutput(JSON.stringify(database));
+            sheetDB.getSheets().forEach(function (sheet) {
+                var sheetValues = sheet.getDataRange().getDisplayValues()
+                sheetValues.forEach(function (value) {
+                    response[value[0]] = formatData(value)
+                })
+            })
+
+            return ContentService.createTextOutput(JSON.stringify(response))
+        }
+    },
+    {
+        "requirements": { "type": /^sheet$/, "sn": /\d/ },
+        "action": function (data) {
+            var response = {}
+
+            var sheetValues = getSheetData(data.sn);
+
+            sheetValues.forEach(function (value) {
+                response[value[0]] = formatData(value);
+            });
+
+            return ContentService.createTextOutput(JSON.stringify(response));
         }
     },
     {
         "requirements": { "type": /^randomQuiz$/, "bsn": /\d/ },
         "action": function (data) {
             var response = [];
-            for (var i = 0; i < 10; i++) response = response.concat(getSheetData(i + '0000'));
-            response = response.filter(function (value) {
-                return value[13] == data.bsn;
-            });
 
-            return ContentService.createTextOutput(JSON.stringify(format(response[Math.floor(Math.random() * response.length)])));
+            sheetDB.getSheets().forEach(function (sheet) {
+                var sheetValues = sheet.getDataRange().getDisplayValues()
+                response = response.concat(sheetValues.filter(function (value) {
+                    return value[13] == data.bsn;
+                }))
+            })
+
+            return ContentService.createTextOutput(JSON.stringify(formatData(response[Math.floor(Math.random() * response.length)])));
         }
     },
     {
         "requirements": { "type": /^randomQuiz$/ },
         "action": function (data) {
-            var response = getSheetData(Math.floor(Math.random() * 8) + '0000');
+            var response = getSheetData(Math.random() * 99999);
 
-            return ContentService.createTextOutput(JSON.stringify(format(response[Math.floor(Math.random() * response.length)])));
-        }
-    },
-    {
-        "requirements": { "type": /^sheet$/, "sn": /\d/ },
-        "action": function (data) {
-            getSheetData(Math.floor(Number(data.sn) / 5000) * 5 + '000').forEach(function (arr) {
-                database[arr[0]] = format(arr);
-            });
-
-            return ContentService.createTextOutput(JSON.stringify(database));
+            return ContentService.createTextOutput(JSON.stringify(formatData(response[Math.floor(Math.random() * response.length)])));
         }
     },
     {

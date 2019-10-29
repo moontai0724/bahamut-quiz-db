@@ -1,9 +1,10 @@
-function getSheetData(SheetName, callback) {
-    var sheet = SpreadsheetApp
-        .openById('1bV8nZP0Iahgp1GoqTT7qNlgvQYPWmg2yT5Wcsta6lbo')
-        .getSheetByName(SheetName)
+var sheetDB = SpreadsheetApp.openById('1bV8nZP0Iahgp1GoqTT7qNlgvQYPWmg2yT5Wcsta6lbo')
+
+function getSheetData(quizSN, callback) {
+    var sheet = sheetDB
+        .getSheetByName(Math.floor(Number(quizSN) / 5000) * 5 + '000')
         .getDataRange()
-        .getValues();
+        .getDisplayValues();
 
     if (callback) {
         return callback(sheet);
@@ -23,19 +24,13 @@ function binary_search(array, target) {
     return -1;
 }
 
-function format(arr) {
+function formatData(arr) {
     return {
-        "quiz_sn": arr[0],
-        "quiz_question": arr[1],
-        "quiz_option_1": arr[2],
-        "quiz_option_2": arr[3],
-        "quiz_option_3": arr[4],
-        "quiz_option_4": arr[5],
-        "quiz_answer_1": arr[6],
-        "quiz_answer_2": arr[7],
-        "quiz_answer_3": arr[8],
-        "quiz_answer_4": arr[9],
-        "quiz_answer": arr[10],
+        "sn": arr[0],
+        "question": arr[1],
+        "options": [arr[2], arr[3], arr[4], arr[5]],
+        "answers": [arr[6], arr[7], arr[8], arr[9]],
+        "answer": arr[10],
         "reporter": arr[11],
         "author": arr[12],
         "BoardSN": arr[13]

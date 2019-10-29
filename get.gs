@@ -1,10 +1,9 @@
-// https://script.google.com/macros/s/AKfycbxYKwsjq6jB2Oo0xwz4bmkd3-5hdguopA6VJ5KD/exec?action=
+// https://script.google.com/macros/s/AKfycbxYKwsjq6jB2Oo0xwz4bmkd3-5hdguopA6VJ5KD/exec?type=
 
 function doGet(data) {
-    // data = data.parameter
-    data = { type: "answer", sn: 1 }
+    data = data.parameter
+    // data = { type: "answer", sn: 1 }
     // data = { type: undefined, sn: undefined }
-    var database = {}
     return mapping_result(data, 0)
 }
 
