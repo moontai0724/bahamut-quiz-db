@@ -1,11 +1,5 @@
 var filter = [
     {
-        "requirements": { "type": /^announcement$/ },
-        "action": function (data) {
-            return ContentService.createTextOutput('No Message');
-        }
-    },
-    {
         "requirements": { "type": /^checkExisting$/, "sn": /\d/ },
         "action": function (data) {
             var table = getSheetData(data.sn);
@@ -108,7 +102,7 @@ var filter = [
     {
         "requirements": {},
         "action": function (data) {
-            return;
+            return ContentService.createTextOutput('No Message');
         }
     }
 ];
