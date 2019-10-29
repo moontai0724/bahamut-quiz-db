@@ -5,20 +5,18 @@ function doPost(data) {
         return getSheetData(data.sn, function (sheet) {
             var sheetName = Math.floor(Number(data.sn) / 5000) * 5 + '000'
 
-            var response = { status: 200, data: data, message: 'Success' }
+            var response = { success: true, data: data, message: 'Success' }
             var index = binary_search(sheet, Number(data.sn))
 
-            var quizData = index != -1 ? sheet[index] : []
+            var quizData = index > -1 ? sheet[index] : []
             var updated = false
 
             if (index != -1) {
-                if (data.correctness && (sheet[index][10] == ' ' || sheet[index][10] == '')) {
+                if (data.correctness && sheet[index][10] != "") {
                     data.options.forEach(function (value, index) {
                         quizData[index + 6] = data.this_answered == index + 1 ? "Y" : "N"
                     })
                     quizData[10] = data.this_answered // answer
-                    quizData[11] = (sheet[data.sn].reporter.indexOf(data.reporter) == -1 && data.reporter != ' ') ? sheet[data.sn][11] + ', ' + data.reporter : sheet[data.sn][11] // reporter
-                    quizData[12] = data.author // author
                     updated = true
                 } else if (!data.correctness && sheet[index][5 + Number(data.this_answered)] == ' ') {
                     quizData[Number(data.this_answered) + 5] = "N"
@@ -63,12 +61,11 @@ function doPost(data) {
 
             if (updated)
                 sheetDB.getSheetByName(sheetName).sort(1)
-            Logger.log(response)
-            return ContentService.createTextOutput(JSON.stringify(response))
+
+            return response
         })
-    } else {
-        return ContentService.createTextOutput(' ')
-    }
+    } else
+        return ContentService.createTextOutput(JSON.stringify({ success: false, data: data, message: "" }))
 }
 
 function checkData(data) {
