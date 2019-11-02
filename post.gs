@@ -12,16 +12,16 @@ function doPost(data) {
             var updated = false
 
             if (index != -1) {
-                if (data.correctness && sheet[index][10] == "") {
+                if (data.correctness && sheet[index][6] == "") {
                     data.options.forEach(function (value, index) {
                         quizData[index + 6] = data.this_answered == index + 1 ? "Y" : "N"
                     })
-                    quizData[10] = data.this_answered // answer
+                    quizData[6] = data.this_answered // answer
                     updated = true
                 }
 
-                if (sheet[index][11] == "") { // update author
-                    quizData[11] = data.author
+                if (sheet[index][7] == "") { // update author
+                    quizData[7] = data.author
                     updated = true
                 }
 
@@ -32,7 +32,7 @@ function doPost(data) {
                         .setValues([quizData])
                     message = "成功更新資料！"
                 } else message = "資料已存在，未更新。"
-            } else {
+            } else if (data.correctness == true) {
                 quizData = [
                     data.sn,
                     decodeURIComponent(data.question),
@@ -40,10 +40,6 @@ function doPost(data) {
                     decodeURIComponent(data.options[1]),
                     decodeURIComponent(data.options[2]),
                     decodeURIComponent(data.options[3]),
-                    data.this_answered == 1 ? (data.correctness ? 'Y' : 'N') : (data.correctness ? 'N' : ''),
-                    data.this_answered == 2 ? (data.correctness ? 'Y' : 'N') : (data.correctness ? 'N' : ''),
-                    data.this_answered == 3 ? (data.correctness ? 'Y' : 'N') : (data.correctness ? 'N' : ''),
-                    data.this_answered == 4 ? (data.correctness ? 'Y' : 'N') : (data.correctness ? 'N' : ''),
                     data.this_answered,
                     data.author,
                     data.BoardSN

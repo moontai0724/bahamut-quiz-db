@@ -29,10 +29,9 @@ function formatData(arr) {
         "sn": arr[0],
         "question": arr[1],
         "options": [arr[2], arr[3], arr[4], arr[5]],
-        "answers": [arr[6], arr[7], arr[8], arr[9]],
-        "answer": arr[10],
-        "author": arr[11],
-        "BoardSN": arr[12]
+        "answer": arr[6],
+        "author": arr[7],
+        "BoardSN": arr[8]
     }
 }
 
