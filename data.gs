@@ -30,10 +30,9 @@ var filter = [
             var index = binary_search(table, Number(data.sn))
 
             if (index > -1) {
-                var wrongAnswers = [];
-                [table[index][6], table[index][7], table[index][8], table[index][9]].forEach(function (value, index) {
-                    if (value == 'N') wrongAnswers[wrongAnswers.length] = index
-                })
+                var wrongAnswers = [1, 2, 3, 4].filter(function (value) {
+                    return value == table[index][6]
+                });
 
                 if (wrongAnswers.length > 0)
                     return successResponse(++wrongAnswers[Math.floor(Math.random() * wrongAnswers.length)])
@@ -62,7 +61,7 @@ var filter = [
             var response = {}
 
             sheetDB.getSheets().forEach(function (sheet) {
-                var sheetValues = sheet.getDataRange().getDisplayValues()
+                var sheetValues = sheet.getDataRange().getValues()
                 sheetValues.forEach(function (value) {
                     response[value[0]] = formatData(value)
                 })
@@ -103,7 +102,7 @@ var filter = [
             var response = []
 
             sheetDB.getSheets().forEach(function (sheet) {
-                var sheetValues = sheet.getDataRange().getDisplayValues()
+                var sheetValues = sheet.getDataRange().getValues()
                 response = response.concat(sheetValues.filter(function (value) {
                     return value[8] == data.bsn
                 }))
