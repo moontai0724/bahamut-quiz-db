@@ -31,9 +31,8 @@ function formatData(arr) {
         "options": [arr[2], arr[3], arr[4], arr[5]],
         "answers": [arr[6], arr[7], arr[8], arr[9]],
         "answer": arr[10],
-        "reporter": arr[11],
-        "author": arr[12],
-        "BoardSN": arr[13]
+        "author": arr[11],
+        "BoardSN": arr[12]
     }
 }
 

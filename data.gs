@@ -5,7 +5,7 @@ var filter = [
             var table = getSheetData(data.sn)
             var index = binary_search(table, Number(data.sn))
 
-            if (index > -1 && table[index][10] != "" && table[index][12] != "")
+            if (index > -1 && table[index][10] != "" && table[index][11] != "")
                 return successResponse(1)
             else
                 return failResponse(0)
@@ -105,7 +105,7 @@ var filter = [
             sheetDB.getSheets().forEach(function (sheet) {
                 var sheetValues = sheet.getDataRange().getDisplayValues()
                 response = response.concat(sheetValues.filter(function (value) {
-                    return value[13] == data.bsn
+                    return value[12] == data.bsn
                 }))
             })
 

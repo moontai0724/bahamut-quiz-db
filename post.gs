@@ -18,13 +18,10 @@ function doPost(data) {
                     })
                     quizData[10] = data.this_answered // answer
                     updated = true
-                } else if (!data.correctness && sheet[index][5 + Number(data.this_answered)] == ' ') {
-                    quizData[Number(data.this_answered) + 5] = "N"
-                    updated = true
                 }
 
-                if (sheet[index][12] == "") { // update author
-                    quizData[12] = data.author
+                if (sheet[index][11] == "") { // update author
+                    quizData[11] = data.author
                     updated = true
                 }
 
@@ -48,7 +45,6 @@ function doPost(data) {
                     data.this_answered == 3 ? (data.correctness ? 'Y' : 'N') : (data.correctness ? 'N' : ''),
                     data.this_answered == 4 ? (data.correctness ? 'Y' : 'N') : (data.correctness ? 'N' : ''),
                     data.this_answered,
-                    "anonymous",
                     data.author,
                     data.BoardSN
                 ]
@@ -71,10 +67,12 @@ function doPost(data) {
 
 function checkData(data) {
     if (data.version &&
+        Number(data.version) > 4.0 &&
         data.sn &&
         data.question
         && data.options && data.options.length == 4 &&
         data.BoardSN &&
+        data.author &&
         data.this_answered &&
         (data.correctness == true || data.correctness == false)) {
         return true
