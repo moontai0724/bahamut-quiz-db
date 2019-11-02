@@ -28,7 +28,7 @@ function doPost(data) {
                 if (updated == true) {
                     sheetDB
                         .getSheetByName(sheetName)
-                        .getRange('A' + (index + 1) + ':N' + (index + 1))
+                        .getRange('A' + (index + 1) + ':I' + (index + 1))
                         .setValues([quizData])
                     message = "成功更新資料！"
                 } else message = "資料已存在，未更新。"
@@ -63,7 +63,7 @@ function doPost(data) {
 
 function checkData(data) {
     if (data.version &&
-        Number(data.version) > 4.0 &&
+        data.version == "4.0.1" &&
         data.sn &&
         data.question
         && data.options && data.options.length == 4 &&
