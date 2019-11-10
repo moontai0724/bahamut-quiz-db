@@ -4,7 +4,7 @@ function getSheetData(quizSN, callback) {
     var sheet = sheetDB
         .getSheetByName(Math.floor(Number(quizSN) / 5000) * 5 + '000')
         .getDataRange()
-        .getValues()
+        .getDisplayValues()
 
     if (callback) {
         return callback(sheet)

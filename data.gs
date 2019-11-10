@@ -61,7 +61,7 @@ var filter = [
             var response = {}
 
             sheetDB.getSheets().forEach(function (sheet) {
-                var sheetValues = sheet.getDataRange().getValues()
+                var sheetValues = sheet.getDataRange().getDisplayValues()
                 sheetValues.forEach(function (value) {
                     response[value[0]] = formatData(value)
                 })
@@ -102,7 +102,7 @@ var filter = [
             var response = []
 
             sheetDB.getSheets().forEach(function (sheet) {
-                var sheetValues = sheet.getDataRange().getValues()
+                var sheetValues = sheet.getDataRange().getDisplayValues()
                 response = response.concat(sheetValues.filter(function (value) {
                     return value[8] == data.bsn
                 }))

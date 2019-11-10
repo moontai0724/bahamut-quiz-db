@@ -13,9 +13,6 @@ function doPost(data) {
 
             if (index != -1) {
                 if (data.correctness && sheet[index][6] == "") {
-                    data.options.forEach(function (value, index) {
-                        quizData[index + 6] = data.this_answered == index + 1 ? "Y" : "N"
-                    })
                     quizData[6] = data.this_answered // answer
                     updated = true
                 }
@@ -63,7 +60,7 @@ function doPost(data) {
 
 function checkData(data) {
     if (data.version &&
-        data.version == "4.0.1" &&
+        data.version == "4.0.3" &&
         data.sn &&
         data.question
         && data.options && data.options.length == 4 &&
