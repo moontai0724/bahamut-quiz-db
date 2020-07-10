@@ -97,6 +97,24 @@ var filter = [
         }
     },
     {
+        "requirements": { "type": /^quiz$/, "question": /.+/ },
+        "action": function (data) {
+            let sheets = sheetDB.getSheets();
+            for (let index in sheets) {
+                var sheetValues = sheets[index].getDataRange().getDisplayValues()
+                for (let valueIndex in sheetValues) {
+                    if (sheetValues[valueIndex][1] == decodeURIComponent(data.question)) {
+                        let response = sheetValues[valueIndex];
+                        return successResponse(formatData(response))
+                        break;
+                    }
+                }
+            }
+
+            return failResponse({})
+        }
+    },
+    {
         "requirements": { "type": /^randomQuiz$/, "bsn": /\d/ },
         "action": function (data) {
             var response = []
